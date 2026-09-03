@@ -11,72 +11,72 @@ interface EducationProps {
 
 export default function Education({ education }: EducationProps) {
   return (
-    <section id="education" className="relative py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <section id="education" className="relative py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Background Section Glow */}
-      <div className="absolute top-1/2 right-0 w-80 h-80 bg-accent-cyan/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 right-0 w-72 sm:w-80 h-72 sm:h-80 bg-accent-cyan/10 rounded-full blur-[140px] pointer-events-none" />
 
       {/* Header */}
-      <div className="mb-16">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel border border-white/10 mb-4">
-          <GraduationCap className="w-3 h-3 text-accent-cyan" />
-          <span className="text-xs font-mono tracking-widest text-zinc-400 uppercase">
+      <div className="mb-12 sm:mb-16">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel border border-white/10 mb-3 sm:mb-4">
+          <GraduationCap className="w-3.5 h-3.5 text-accent-cyan" />
+          <span className="text-[11px] sm:text-xs font-mono tracking-widest text-zinc-400 uppercase">
             02 // ACADEMIC FOUNDATION
           </span>
         </div>
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold tracking-tight text-white">
+        <h2 className="text-3xl sm:text-5xl md:text-6xl font-display font-bold tracking-tight text-white">
           Education & <span className="text-gradient-accent">Specialization</span>
         </h2>
       </div>
 
-      {/* Vertical Animated Timeline */}
-      <div className="relative border-l border-white/10 ml-4 sm:ml-8 space-y-12 pl-6 sm:pl-10">
+      {/* Vertical Animated Timeline (Precision centered on mobile & laptop) */}
+      <div className="relative border-l border-white/15 ml-3 sm:ml-8 space-y-8 sm:space-y-12 pl-5 sm:pl-8">
         {education.map((item, idx) => (
           <motion.div
             key={item.id}
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -25 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-50px' }}
             transition={{ duration: 0.6, delay: idx * 0.15 }}
             onMouseEnter={() => sounds.playHover()}
             className="relative group"
           >
-            {/* Timeline Glowing Node Marker */}
-            <div className="absolute -left-[31px] sm:-left-[47px] top-1.5 w-5 h-5 rounded-full bg-[#07080a] border-2 border-accent-cyan flex items-center justify-center shadow-[0_0_12px_rgba(0,240,255,0.6)] group-hover:scale-125 transition-transform duration-300">
+            {/* Timeline Glowing Node Marker (Mathematically centered on border-l line) */}
+            <div className="absolute -left-[30px] sm:-left-[42px] top-1.5 w-5 h-5 rounded-full bg-[#0a0e17] border-2 border-accent-cyan flex items-center justify-center shadow-[0_0_14px_rgba(0,240,255,0.7)] group-hover:scale-125 transition-transform duration-300">
               <div className="w-2 h-2 rounded-full bg-accent-cyan animate-pulse" />
             </div>
 
             {/* Timeline Card */}
-            <div className="p-7 sm:p-9 rounded-3xl glass-card border border-white/10 hover:border-accent-cyan/40 transition-all duration-300">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div className="p-5 sm:p-8 rounded-3xl glass-card border border-white/10 hover:border-accent-cyan/40 transition-all duration-300">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3 sm:mb-4">
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-display font-bold text-white group-hover:text-accent-cyan transition-colors">
+                  <h3 className="text-lg sm:text-2xl font-display font-bold text-white group-hover:text-accent-cyan transition-colors leading-snug">
                     {item.degree}
                   </h3>
-                  <div className="flex items-center gap-2 text-sm text-zinc-300 font-medium mt-1">
+                  <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-zinc-300 font-medium mt-1">
                     <span>{item.institution}</span>
-                    <span className="text-zinc-600">•</span>
-                    <span className="flex items-center gap-1 text-xs text-zinc-400 font-mono">
-                      <MapPin className="w-3 h-3 text-accent-cyan" />
+                    <span className="text-zinc-600 hidden xs:inline">•</span>
+                    <span className="flex items-center gap-1 text-[11px] sm:text-xs text-zinc-400 font-mono">
+                      <MapPin className="w-3 h-3 text-accent-cyan shrink-0" />
                       {item.location}
                     </span>
                   </div>
                 </div>
 
-                <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-zinc-300 self-start sm:self-auto">
-                  <Calendar className="w-3.5 h-3.5 text-accent-cyan" />
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-panel border border-white/10 text-[11px] font-mono text-accent-cyan shrink-0 self-start sm:self-auto">
+                  <Calendar className="w-3 h-3" />
                   <span>{item.period}</span>
                 </div>
               </div>
 
-              <p className="text-sm sm:text-base text-zinc-300 font-light leading-relaxed mb-6">
+              <p className="text-xs sm:text-sm text-zinc-300 font-light leading-relaxed mb-4">
                 {item.description}
               </p>
 
-              {item.highlights && item.highlights.length > 0 && (
-                <div className="pt-4 border-t border-white/5 space-y-2">
+              {item.highlights && (
+                <div className="space-y-2 pt-3 border-t border-white/5">
                   {item.highlights.map((h, i) => (
-                    <div key={i} className="flex items-center gap-2 text-xs font-mono text-zinc-400">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <div key={i} className="flex items-start gap-2 text-xs text-zinc-400 font-light">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-accent-cyan shrink-0 mt-0.5" />
                       <span>{h}</span>
                     </div>
                   ))}

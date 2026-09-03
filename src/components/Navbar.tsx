@@ -2,9 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion, useScroll } from 'framer-motion';
 import Image from 'next/image';
-import { Volume2, VolumeX, Menu, X, ArrowUpRight, Shield } from 'lucide-react';
+import { motion, AnimatePresence, useScroll } from 'framer-motion';
+import {
+  Volume2,
+  VolumeX,
+  Menu,
+  X,
+  ArrowUpRight,
+  Shield,
+  Phone,
+  Mail,
+  ExternalLink,
+  Sparkles,
+} from 'lucide-react';
 import { sounds } from '@/lib/sound';
 
 export default function Navbar() {
@@ -15,11 +26,20 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      setScrolled(window.scrollY > 30);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Prevent background scrolling when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [mobileMenuOpen]);
 
   const toggleSound = () => {
     const next = !soundActive;
@@ -29,10 +49,10 @@ export default function Navbar() {
   };
 
   const navItems = [
+    { label: 'Projects', href: '#projects' },
     { label: 'About', href: '#about' },
     { label: 'Education', href: '#education' },
     { label: 'Certifications', href: '#certifications' },
-    { label: 'Projects', href: '#projects' },
     { label: 'Contact', href: '#contact' },
   ];
 
@@ -45,20 +65,20 @@ export default function Navbar() {
       />
 
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'py-3' : 'py-5'
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? 'py-2.5 sm:py-3' : 'py-4 sm:py-5'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center justify-between glass-panel px-5 py-3 rounded-full border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <nav className="flex items-center justify-between glass-panel px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-full border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.6)] backdrop-blur-xl">
             {/* Brand Logo with Avatar */}
             <Link
               href="/"
-              className="flex items-center gap-3 group"
+              className="flex items-center gap-2.5 sm:gap-3 group"
               onMouseEnter={() => sounds.playHover()}
               onClick={() => sounds.playClick()}
             >
-              <div className="relative w-8 h-8 rounded-full overflow-hidden border border-accent-cyan/60 shadow-[0_0_12px_rgba(0,240,255,0.4)] group-hover:scale-110 transition-transform">
+              <div className="relative w-8 h-8 rounded-full overflow-hidden border border-accent-cyan/60 shadow-[0_0_12px_rgba(0,240,255,0.4)] group-hover:scale-110 transition-transform shrink-0">
                 <Image
                   src="/images/suriyakumar-portrait.jpg"
                   alt="Suriyakumar E"
@@ -67,16 +87,16 @@ export default function Navbar() {
                 />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-semibold tracking-tight text-white group-hover:text-accent-cyan transition-colors">
+                <span className="text-xs sm:text-sm font-semibold tracking-tight text-white group-hover:text-accent-cyan transition-colors">
                   Suriyakumar E
                 </span>
-                <span className="text-[10px] tracking-wider text-zinc-400 uppercase font-mono hidden sm:inline-block">
+                <span className="text-[9px] sm:text-[10px] tracking-wider text-zinc-400 uppercase font-mono hidden xs:inline-block">
                   AI & ML • Data Analytics
                 </span>
               </div>
             </Link>
 
-            {/* Desktop Navigation Links */}
+            {/* Desktop Navigation Links (Laptop / Desktop) */}
             <div className="hidden md:flex items-center gap-1">
               {navItems.map((item) => (
                 <a
@@ -84,7 +104,7 @@ export default function Navbar() {
                   href={item.href}
                   onMouseEnter={() => sounds.playHover()}
                   onClick={() => sounds.playClick()}
-                  className="px-3.5 py-1.5 text-xs uppercase tracking-widest text-zinc-300 hover:text-white hover:bg-white/5 rounded-full transition-all duration-200"
+                  className="px-3.5 py-1.5 text-xs font-mono text-zinc-300 hover:text-white hover:bg-white/5 rounded-full transition-all duration-200"
                 >
                   {item.label}
                 </a>
@@ -92,11 +112,11 @@ export default function Navbar() {
             </div>
 
             {/* Right Actions: Availability Badge, Sound Toggle, Admin & CTA */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            <div className="flex items-center gap-1.5 sm:gap-2.5">
               {/* Live Status Badge */}
               <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-[11px] font-medium text-emerald-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Open for Internships
+                <span>Open for Work</span>
               </div>
 
               {/* Sound FX Toggle */}
@@ -124,7 +144,7 @@ export default function Navbar() {
                 <Shield className="w-4 h-4" />
               </Link>
 
-              {/* Action Button */}
+              {/* Desktop Action Button */}
               <a
                 href="#contact"
                 onMouseEnter={() => sounds.playHover()}
@@ -135,9 +155,12 @@ export default function Navbar() {
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
 
-              {/* Mobile Menu Button */}
+              {/* Mobile Menu Hamburger Button */}
               <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                onClick={() => {
+                  setMobileMenuOpen(!mobileMenuOpen);
+                  sounds.playClick();
+                }}
                 className="md:hidden p-2 rounded-full text-zinc-300 hover:text-white hover:bg-white/10"
                 aria-label="Toggle Navigation Menu"
               >
@@ -147,46 +170,78 @@ export default function Navbar() {
           </nav>
         </div>
 
-        {/* Mobile Dropdown Drawer */}
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="md:hidden mt-2 mx-4 p-4 rounded-2xl glass-panel border border-white/10 shadow-2xl flex flex-col gap-2.5"
-          >
-            {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  sounds.playClick();
-                }}
-                className="px-3 py-2 text-sm text-zinc-200 hover:text-white hover:bg-white/5 rounded-lg"
-              >
-                {item.label}
-              </a>
-            ))}
-            <div className="pt-2 border-t border-white/10 flex items-center justify-between">
-              <Link
-                href="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-xs text-zinc-400 hover:text-white flex items-center gap-1"
-              >
-                <Shield className="w-3.5 h-3.5" />
-                Admin Dashboard
-              </Link>
-              <a
-                href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-4 py-1.5 text-xs font-semibold text-black bg-white rounded-full"
-              >
-                Connect
-              </a>
-            </div>
-          </motion.div>
-        )}
+        {/* FULLSCREEN FROSTED GLASS MOBILE MENU DRAWER */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.25 }}
+              className="md:hidden fixed inset-x-4 top-20 z-50 p-6 rounded-3xl glass-panel border border-white/20 bg-[#0a0e17]/95 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.9)] space-y-6"
+            >
+              {/* Header inside drawer */}
+              <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                <div className="flex items-center gap-2 text-xs font-mono text-emerald-400">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>Open for Internships & AI Projects</span>
+                </div>
+                <button
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-1 rounded-full text-zinc-400 hover:text-white"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Nav Links */}
+              <div className="flex flex-col gap-2">
+                {navItems.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      sounds.playClick();
+                    }}
+                    className="flex items-center justify-between px-4 py-3 text-base font-serif text-white hover:text-accent-cyan hover:bg-white/5 rounded-2xl transition-colors"
+                  >
+                    <span>{item.label}</span>
+                    <ArrowUpRight className="w-4 h-4 text-zinc-500" />
+                  </a>
+                ))}
+              </div>
+
+              {/* Direct Quick Actions for Phone Users */}
+              <div className="pt-4 border-t border-white/10 space-y-2.5">
+                <a
+                  href="mailto:suryaaswin000@gmail.com"
+                  className="w-full py-3 px-4 rounded-xl glass-panel border border-white/10 text-xs font-mono text-zinc-200 flex items-center justify-center gap-2 hover:border-accent-cyan/40"
+                >
+                  <Mail className="w-3.5 h-3.5 text-accent-cyan" />
+                  <span>suryaaswin000@gmail.com</span>
+                </a>
+
+                <a
+                  href="tel:+919445648373"
+                  className="w-full py-3 px-4 rounded-xl glass-panel border border-white/10 text-xs font-mono text-zinc-200 flex items-center justify-center gap-2 hover:border-accent-cyan/40"
+                >
+                  <Phone className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>+91-9445648373</span>
+                </a>
+
+                <Link
+                  href="/admin"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="w-full py-2.5 text-center text-xs font-mono text-zinc-400 hover:text-white flex items-center justify-center gap-1.5"
+                >
+                  <Shield className="w-3.5 h-3.5" />
+                  <span>Admin Studio</span>
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
     </>
   );

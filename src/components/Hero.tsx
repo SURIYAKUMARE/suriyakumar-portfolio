@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
-import { ArrowDownRight, Sparkles, Terminal, Database, Cpu, Mail } from 'lucide-react';
+import { ArrowDownRight, Sparkles, Terminal, Database, Cpu, Mail, ArrowUpRight } from 'lucide-react';
 import { sounds } from '@/lib/sound';
 
 interface HeroProps {
@@ -23,11 +23,11 @@ export default function Hero({
 
   const { scrollY } = useScroll();
   const opacity = useTransform(scrollY, [0, 400], [1, 0.2]);
-  const yParallax = useTransform(scrollY, [0, 500], [0, 140]);
+  const yParallax = useTransform(scrollY, [0, 500], [0, 120]);
 
-  // Magnetic button physics
+  // Magnetic button physics for desktop
   const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (!magneticButtonRef.current) return;
+    if (!magneticButtonRef.current || typeof window === 'undefined' || window.innerWidth < 1024) return;
     const rect = magneticButtonRef.current.getBoundingClientRect();
     const x = e.clientX - (rect.left + rect.width / 2);
     const y = e.clientY - (rect.top + rect.height / 2);
@@ -38,35 +38,35 @@ export default function Hero({
     setBtnPos({ x: 0, y: 0 });
   };
 
-  // Kinetic letters animation split
-  const letters = name.split('');
+  // Group letters by words so words never break mid-spelling on mobile
+  const words = name.split(' ');
   const subtitleWords = subtitle.split(' ');
 
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 pt-24 pb-16 overflow-hidden select-none"
+      className="relative min-h-[92vh] sm:min-h-screen flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8 pt-28 pb-16 overflow-hidden select-none"
     >
       {/* Drifting Soft Mesh Gradient Blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[18%] left-[22%] w-[500px] h-[500px] rounded-full bg-accent-cyan/15 blur-[140px] animate-blob-float-1" />
-        <div className="absolute top-[42%] right-[16%] w-[450px] h-[450px] rounded-full bg-emerald-500/12 blur-[140px] animate-blob-float-2" />
-        <div className="absolute -bottom-[10%] left-[36%] w-[550px] h-[550px] rounded-full bg-sky-900/15 blur-[160px] animate-blob-float-3" />
+        <div className="absolute top-[16%] left-[18%] w-[320px] sm:w-[500px] h-[320px] sm:h-[500px] rounded-full bg-accent-cyan/15 blur-[140px] animate-blob-float-1" />
+        <div className="absolute top-[42%] right-[14%] w-[280px] sm:w-[450px] h-[280px] sm:h-[450px] rounded-full bg-emerald-500/10 blur-[140px] animate-blob-float-2" />
+        <div className="absolute -bottom-[10%] left-[34%] w-[350px] sm:w-[550px] h-[350px] sm:h-[550px] rounded-full bg-sky-900/15 blur-[160px] animate-blob-float-3" />
       </div>
 
       {/* Hero Content Area */}
       <motion.div
         style={{ opacity, y: yParallax }}
-        className="relative z-10 max-w-6xl mx-auto flex flex-col items-center text-center"
+        className="relative z-10 max-w-5xl mx-auto flex flex-col items-center text-center w-full"
       >
         {/* Top Floating Badge with Profile Avatar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full glass-panel border border-white/10 mb-8 shadow-[0_0_25px_rgba(0,240,255,0.15)]"
+          className="inline-flex items-center gap-2.5 sm:gap-3 px-3.5 py-1.5 rounded-full glass-panel border border-white/10 mb-6 sm:mb-8 shadow-[0_0_25px_rgba(0,240,255,0.15)] max-w-[95%]"
         >
-          <div className="relative w-7 h-7 rounded-full overflow-hidden border border-accent-cyan/60 shadow-[0_0_10px_rgba(0,240,255,0.4)]">
+          <div className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden border border-accent-cyan/60 shadow-[0_0_10px_rgba(0,240,255,0.4)] shrink-0">
             <Image
               src="/images/suriyakumar-portrait.jpg"
               alt={name}
@@ -74,47 +74,51 @@ export default function Hero({
               className="object-cover object-top"
             />
           </div>
-          <span className="text-xs font-mono tracking-widest text-zinc-300 uppercase">
+          <span className="text-[10px] sm:text-xs font-mono tracking-wider sm:tracking-widest text-zinc-300 uppercase truncate">
             {title}
           </span>
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
         </motion.div>
 
-        {/* Massive Kinetic Typography */}
-        <h1 className="flex flex-wrap justify-center items-center gap-x-2 md:gap-x-4 mb-6 font-display font-extrabold tracking-tighter text-5xl sm:text-7xl md:text-8xl lg:text-9xl uppercase text-white leading-none">
-          {letters.map((char, index) => (
-            <motion.span
-              key={index}
-              initial={{ opacity: 0, y: 70, rotateX: -60 }}
-              animate={{ opacity: 1, y: 0, rotateX: 0 }}
-              transition={{
-                duration: 0.75,
-                delay: 0.15 + index * 0.04,
-                ease: [0.215, 0.61, 0.355, 1],
-              }}
-              whileHover={{
-                scale: 1.1,
-                color: '#00f0ff',
-                transition: { duration: 0.2 },
-              }}
-              className="inline-block transition-colors cursor-default"
-              onMouseEnter={() => sounds.playHover()}
-            >
-              {char === ' ' ? '\u00A0' : char}
-            </motion.span>
+        {/* Massive Kinetic Typography (Word-Safe for Phones & Laptops) */}
+        <h1 className="flex flex-wrap justify-center items-center gap-x-3 sm:gap-x-5 md:gap-x-7 mb-6 font-display font-extrabold tracking-tight text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl uppercase text-white leading-none">
+          {words.map((word, wordIndex) => (
+            <span key={wordIndex} className="inline-flex whitespace-nowrap">
+              {word.split('').map((char, charIndex) => (
+                <motion.span
+                  key={charIndex}
+                  initial={{ opacity: 0, y: 60, rotateX: -55 }}
+                  animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                  transition={{
+                    duration: 0.7,
+                    delay: 0.15 + (wordIndex * 6 + charIndex) * 0.035,
+                    ease: [0.215, 0.61, 0.355, 1],
+                  }}
+                  whileHover={{
+                    scale: 1.12,
+                    color: '#00f0ff',
+                    transition: { duration: 0.15 },
+                  }}
+                  className="inline-block transition-colors cursor-default"
+                  onMouseEnter={() => sounds.playHover()}
+                >
+                  {char}
+                </motion.span>
+              ))}
+            </span>
           ))}
         </h1>
 
         {/* Word-by-Word Reveal Subtitle */}
-        <p className="max-w-2xl text-base sm:text-lg md:text-xl text-zinc-400 font-light leading-relaxed mb-10 flex flex-wrap justify-center gap-x-1.5">
+        <p className="max-w-2xl text-xs sm:text-base md:text-lg lg:text-xl text-zinc-300 font-light leading-relaxed mb-8 sm:mb-10 flex flex-wrap justify-center gap-x-1 sm:gap-x-1.5 px-2">
           {subtitleWords.map((word, i) => (
             <motion.span
               key={i}
-              initial={{ opacity: 0, filter: 'blur(8px)', y: 15 }}
+              initial={{ opacity: 0, filter: 'blur(8px)', y: 12 }}
               animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
               transition={{
-                duration: 0.5,
-                delay: 0.5 + i * 0.035,
+                duration: 0.45,
+                delay: 0.4 + i * 0.03,
                 ease: 'easeOut',
               }}
               className="inline-block"
@@ -124,72 +128,63 @@ export default function Hero({
           ))}
         </p>
 
-        {/* Magnetic CTA Buttons */}
+        {/* CTA Buttons (Touch-Optimized for Phone, Magnetic for Laptop) */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.9 }}
-          className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6"
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="flex flex-col sm:flex-row items-center gap-3 sm:gap-5 w-full sm:w-auto px-4 sm:px-0"
         >
-          {/* Main Magnetic Button */}
+          {/* Main Primary CTA */}
           <motion.a
             ref={magneticButtonRef}
             href="#projects"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             animate={{ x: btnPos.x, y: btnPos.y }}
-            transition={{ type: 'spring', stiffness: 250, damping: 15 }}
+            transition={{ type: 'spring', damping: 15, stiffness: 180 }}
             onMouseEnter={() => sounds.playHover()}
             onClick={() => sounds.playClick()}
-            className="magnetic-btn group relative inline-flex items-center gap-3 px-8 py-4 rounded-full bg-white text-black font-semibold text-sm tracking-wider uppercase transition-shadow duration-300 shadow-[0_0_35px_rgba(0,240,255,0.35)] hover:shadow-[0_0_50px_rgba(0,240,255,0.7)] overflow-hidden"
+            className="group relative inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-3.5 sm:py-4 rounded-full bg-white text-black font-semibold text-xs uppercase tracking-widest hover:bg-zinc-200 transition-all duration-300 shadow-[0_0_30px_rgba(0,240,255,0.3)] hover:shadow-[0_0_40px_rgba(0,240,255,0.6)] active:scale-95"
+            data-cursor="pointer"
           >
-            <span className="relative z-10 flex items-center gap-2">
-              <span>View My Work</span>
-              <ArrowDownRight className="w-4 h-4 transition-transform duration-300 group-hover:rotate-45" />
-            </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-accent-cyan to-emerald-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
+            <span>Explore Projects</span>
+            <ArrowDownRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
           </motion.a>
 
-          {/* Secondary Outline Button */}
+          {/* Secondary CTA */}
           <a
             href="#contact"
             onMouseEnter={() => sounds.playHover()}
             onClick={() => sounds.playClick()}
-            className="inline-flex items-center gap-2 px-7 py-4 rounded-full glass-panel border border-white/10 text-zinc-300 hover:text-white hover:border-accent-cyan/40 text-sm font-medium tracking-wider uppercase transition-all duration-300"
+            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-3.5 sm:py-4 rounded-full glass-panel border border-white/15 text-zinc-300 hover:text-white hover:border-accent-cyan/40 text-xs font-medium uppercase tracking-widest transition-all duration-300 active:scale-95"
+            data-cursor="pointer"
           >
-            <Mail className="w-4 h-4 text-accent-cyan" />
-            <span>Contact Me</span>
+            <Mail className="w-3.5 h-3.5 text-accent-cyan" />
+            <span>Get in Touch</span>
           </a>
         </motion.div>
-
-        {/* Micro-Details Info Strip */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.9, delay: 1.1 }}
-          className="mt-16 pt-8 border-t border-white/5 w-full max-w-4xl grid grid-cols-2 md:grid-cols-4 gap-6 text-left font-mono text-xs"
-        >
-          <div>
-            <span className="text-zinc-500 block">EDUCATION</span>
-            <span className="text-zinc-200 font-sans">B.E. CSE (AI & ML)</span>
-          </div>
-          <div>
-            <span className="text-zinc-500 block">CORE EXPERTISE</span>
-            <span className="text-zinc-200 font-sans">Python • SQL • Power BI</span>
-          </div>
-          <div>
-            <span className="text-zinc-500 block">INSTITUTION</span>
-            <span className="text-zinc-200 font-sans">Rathinam Tech Campus</span>
-          </div>
-          <div>
-            <span className="text-zinc-500 block">OPPORTUNITY STATUS</span>
-            <span className="text-emerald-400 font-sans flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-              Open for Internships
-            </span>
-          </div>
-        </motion.div>
       </motion.div>
+
+      {/* Floating Micro-Details Strip at Bottom */}
+      <div className="w-full max-w-5xl mx-auto mt-12 sm:mt-16 pt-6 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-4 text-zinc-400 font-mono text-[11px] px-2">
+        <div className="flex items-center gap-2">
+          <Terminal className="w-3.5 h-3.5 text-accent-cyan shrink-0" />
+          <span className="truncate">Python • SQL • C++</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Database className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+          <span className="truncate">Pandas • Power BI</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <Cpu className="w-3.5 h-3.5 text-accent-cyan shrink-0" />
+          <span className="truncate">AI & ML Specialization</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
+          <span className="text-zinc-300 truncate">Rathinam Tech Campus</span>
+        </div>
+      </div>
     </section>
   );
 }
