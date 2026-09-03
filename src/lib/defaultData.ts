@@ -93,6 +93,7 @@ export const initialProfile: ProfileData = {
       issuer: "Google",
       year: "2025",
       category: "Data Analytics",
+      imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1400&auto=format&fit=crop",
     },
     {
       id: "cert-2",
@@ -100,6 +101,7 @@ export const initialProfile: ProfileData = {
       issuer: "Microsoft",
       year: "2025",
       category: "AI & ML",
+      imageUrl: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1400&auto=format&fit=crop",
     },
     {
       id: "cert-3",
@@ -107,6 +109,7 @@ export const initialProfile: ProfileData = {
       issuer: "Leading AI Institute",
       year: "2026",
       category: "AI & ML",
+      imageUrl: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1400&auto=format&fit=crop",
     },
     {
       id: "cert-4",
@@ -114,6 +117,7 @@ export const initialProfile: ProfileData = {
       issuer: "Google Career Certificates",
       year: "2025",
       category: "Data Analytics",
+      imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1400&auto=format&fit=crop",
     },
     {
       id: "cert-5",
@@ -121,6 +125,7 @@ export const initialProfile: ProfileData = {
       issuer: "Professional Analytics Board",
       year: "2025",
       category: "Data Analytics",
+      imageUrl: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=1400&auto=format&fit=crop",
     },
     {
       id: "cert-6",
@@ -128,6 +133,7 @@ export const initialProfile: ProfileData = {
       issuer: "AI Research Academy",
       year: "2024",
       category: "AI & ML",
+      imageUrl: "https://images.unsplash.com/photo-1677442136019-21780efad99a?q=80&w=1400&auto=format&fit=crop",
     },
     {
       id: "cert-7",
@@ -135,6 +141,7 @@ export const initialProfile: ProfileData = {
       issuer: "Innovation Cell",
       year: "2025",
       category: "Innovation & Honours",
+      imageUrl: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?q=80&w=1400&auto=format&fit=crop",
     },
     {
       id: "cert-8",
@@ -143,6 +150,7 @@ export const initialProfile: ProfileData = {
       year: "2026",
       featuredAward: true,
       category: "Innovation & Honours",
+      imageUrl: "https://images.unsplash.com/photo-1569683795645-b62e50fbf103?q=80&w=1400&auto=format&fit=crop",
     },
   ],
 };

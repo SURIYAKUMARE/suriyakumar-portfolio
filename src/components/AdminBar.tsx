@@ -44,7 +44,7 @@ export default function AdminBar({
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showDrawer, setShowDrawer] = useState(false);
-  const [activeTab, setActiveTab] = useState<'photo' | 'profile' | 'projects' | 'messages'>('photo');
+  const [activeTab, setActiveTab] = useState<'photo' | 'profile' | 'certs' | 'projects' | 'messages'>('photo');
 
   // Login form state
   const [password, setPassword] = useState('');
@@ -372,6 +372,7 @@ export default function AdminBar({
                 {[
                   { id: 'photo', label: 'Photo & Looks', icon: Camera },
                   { id: 'profile', label: 'Bio & Identity', icon: Sliders },
+                  { id: 'certs', label: 'Certificates', icon: Award, count: profile.certifications?.length },
                   { id: 'projects', label: 'Projects', icon: Layers, count: projects.length },
                   { id: 'messages', label: 'Inquiries', icon: MessageSquare, count: messages.length },
                 ].map((tab) => {
@@ -525,7 +526,67 @@ export default function AdminBar({
                   </form>
                 )}
 
-                {/* 3. PROJECTS TAB */}
+                {/* 3. CERTIFICATES & PHOTOS TAB */}
+                {activeTab === 'certs' && (
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-xs font-mono uppercase text-zinc-400">
+                        Certificates & Photos ({profile.certifications?.length || 0})
+                      </span>
+                    </div>
+
+                    <div className="space-y-3">
+                      {(profile.certifications || []).map((cert, cIdx) => (
+                        <div
+                          key={cert.id}
+                          className="p-3.5 rounded-2xl glass-panel border border-white/10 space-y-2.5"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <span className="text-[10px] font-mono text-accent-cyan uppercase">{cert.category}</span>
+                              <h5 className="text-xs font-bold text-white font-serif">{cert.title}</h5>
+                              <p className="text-[10px] font-mono text-zinc-400">{cert.issuer} • {cert.year}</p>
+                            </div>
+                            {cert.featuredAward && (
+                              <span className="px-2 py-0.5 rounded-full text-[9px] font-mono bg-amber-400/20 text-amber-300 border border-amber-400/40">
+                                Award
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Image preview & URL input */}
+                          <div className="space-y-1 pt-2 border-t border-white/5">
+                            <label className="text-[10px] font-mono text-zinc-400 block">
+                              Certificate Photo URL:
+                            </label>
+                            <div className="flex items-center gap-2">
+                              {cert.imageUrl && (
+                                <div className="relative w-10 h-7 rounded overflow-hidden border border-white/20 shrink-0">
+                                  <img src={cert.imageUrl} alt="" className="w-full h-full object-cover" />
+                                </div>
+                              )}
+                              <input
+                                type="url"
+                                value={cert.imageUrl || ''}
+                                onChange={async (e) => {
+                                  const updatedCerts = [...(profile.certifications || [])];
+                                  updatedCerts[cIdx] = { ...cert, imageUrl: e.target.value };
+                                  const updatedProfile = { ...profile, certifications: updatedCerts };
+                                  onProfileUpdate(updatedProfile);
+                                  await DataService.saveProfile(updatedProfile);
+                                }}
+                                placeholder="Paste certificate image link..."
+                                className="flex-1 bg-white/5 border border-white/10 rounded-lg px-2.5 py-1 text-[11px] text-white focus:outline-none focus:border-accent-cyan"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* 4. PROJECTS TAB */}
                 {activeTab === 'projects' && (
                   <div className="space-y-4">
                     <div className="flex justify-between items-center">

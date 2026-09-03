@@ -1216,6 +1216,133 @@ export default function AdminPage() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Edit Certification Modal */}
+      <AnimatePresence>
+        {editingCert && (
+          <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+            <div
+              onClick={() => setEditingCert(null)}
+              className="fixed inset-0 bg-black/85 backdrop-blur-xl"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative w-full max-w-lg rounded-3xl glass-panel border border-white/20 bg-[#0a0e17] shadow-2xl z-10 p-6 sm:p-8 space-y-4"
+            >
+              <h3 className="text-xl font-bold font-serif text-white">
+                {isCreatingCert ? 'Add New Certificate' : 'Edit Certificate'}
+              </h3>
+
+              <form onSubmit={handleSaveCert} className="space-y-4">
+                <div>
+                  <label className="text-xs font-mono text-zinc-400 block mb-1">Title</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingCert.title}
+                    onChange={(e) => setEditingCert({ ...editingCert, title: e.target.value })}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white focus:outline-none focus:border-accent-cyan"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs font-mono text-zinc-400 block mb-1">Issuer</label>
+                    <input
+                      type="text"
+                      required
+                      value={editingCert.issuer}
+                      onChange={(e) => setEditingCert({ ...editingCert, issuer: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white focus:outline-none focus:border-accent-cyan"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-mono text-zinc-400 block mb-1">Year</label>
+                    <input
+                      type="text"
+                      required
+                      value={editingCert.year}
+                      onChange={(e) => setEditingCert({ ...editingCert, year: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white focus:outline-none focus:border-accent-cyan"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-xs font-mono text-zinc-400 block mb-1">Category</label>
+                  <select
+                    value={editingCert.category}
+                    onChange={(e) =>
+                      setEditingCert({
+                        ...editingCert,
+                        category: e.target.value as CertificationItem['category'],
+                      })
+                    }
+                    className="w-full bg-[#101724] border border-white/10 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white focus:outline-none focus:border-accent-cyan"
+                  >
+                    <option value="Data Analytics">Data Analytics</option>
+                    <option value="AI & ML">AI & ML</option>
+                    <option value="Innovation & Honours">Innovation & Honours</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-xs font-mono text-zinc-400 block mb-1">
+                    Certificate Photo URL (Shown when clicked)
+                  </label>
+                  <input
+                    type="url"
+                    value={editingCert.imageUrl || ''}
+                    onChange={(e) => setEditingCert({ ...editingCert, imageUrl: e.target.value })}
+                    placeholder="https://images.unsplash.com/... or /images/..."
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white focus:outline-none focus:border-accent-cyan"
+                  />
+                  {editingCert.imageUrl && (
+                    <div className="mt-2 relative aspect-video w-32 rounded-lg overflow-hidden border border-white/20">
+                      <img src={editingCert.imageUrl} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-2 pt-2">
+                  <input
+                    type="checkbox"
+                    id="featuredAward"
+                    checked={!!editingCert.featuredAward}
+                    onChange={(e) =>
+                      setEditingCert({ ...editingCert, featuredAward: e.target.checked })
+                    }
+                    className="rounded bg-white/10 border-white/20 text-accent-cyan focus:ring-0"
+                  />
+                  <label htmlFor="featuredAward" className="text-xs font-mono text-zinc-300">
+                    Featured Gold Award (YUDHISTRA Style Trophy)
+                  </label>
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+                  <button
+                    type="button"
+                    onClick={() => setEditingCert(null)}
+                    className="px-4 py-2 text-xs font-mono text-zinc-400 hover:text-white"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 rounded-xl bg-white text-black font-semibold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-colors"
+                  >
+                    Save Certificate
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

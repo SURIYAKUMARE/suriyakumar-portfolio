@@ -40,6 +40,7 @@ export interface CertificationItem {
   issuer: string;
   year: string;
   credentialUrl?: string;
+  imageUrl?: string;
   featuredAward?: boolean;
   category: "Data Analytics" | "AI & ML" | "Innovation & Honours";
 }
