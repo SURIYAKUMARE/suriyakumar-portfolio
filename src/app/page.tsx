@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import Preloader from '@/components/Preloader';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import SpaceEduShowcase from '@/components/SpaceEduShowcase';
 import About from '@/components/About';
+import SpaceEduShowcase from '@/components/SpaceEduShowcase';
 import Education from '@/components/Education';
 import Certifications from '@/components/Certifications';
 import Contact from '@/components/Contact';
@@ -52,11 +52,11 @@ export default function Home() {
             subtitle={profile.subtitle}
           />
 
+          {/* About Me (Bio, 3D Card, Interactive Skills & Badges) */}
+          <About profile={profile} />
+
           {/* SpaceEdu 4-Phase Cinematic Pinned Project Showcase */}
           <SpaceEduShowcase projects={projects} />
-
-          {/* About Me */}
-          <About profile={profile} />
 
           {/* Academic Foundation Timeline */}
           <Education education={profile.education || initialProfile.education} />

@@ -49,8 +49,8 @@ export default function Navbar() {
   };
 
   const navItems = [
-    { label: 'Projects', href: '#projects' },
     { label: 'About', href: '#about' },
+    { label: 'Projects', href: '#projects' },
     { label: 'Education', href: '#education' },
     { label: 'Certifications', href: '#certifications' },
     { label: 'Contact', href: '#contact' },
