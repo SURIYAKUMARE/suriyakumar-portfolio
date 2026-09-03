@@ -10,12 +10,14 @@ interface HeroProps {
   name?: string;
   title?: string;
   subtitle?: string;
+  photo?: string;
 }
 
 export default function Hero({
   name = 'Suriyakumar E',
   title = 'Data Analytics | AI & ML Engineering Student',
   subtitle = 'Transforming raw data into predictive intelligence and architecting forward-thinking AI & ML solutions.',
+  photo = '/images/suriyakumar-portrait.jpg',
 }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const magneticButtonRef = useRef<HTMLAnchorElement>(null);
@@ -68,7 +70,7 @@ export default function Hero({
         >
           <div className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden border border-accent-cyan/60 shadow-[0_0_10px_rgba(0,240,255,0.4)] shrink-0">
             <Image
-              src="/images/suriyakumar-portrait.jpg"
+              src={photo}
               alt={name}
               fill
               className="object-cover object-top"

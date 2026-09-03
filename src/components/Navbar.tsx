@@ -18,7 +18,11 @@ import {
 } from 'lucide-react';
 import { sounds } from '@/lib/sound';
 
-export default function Navbar() {
+interface NavbarProps {
+  photo?: string;
+}
+
+export default function Navbar({ photo = '/images/suriyakumar-portrait.jpg' }: NavbarProps) {
   const [soundActive, setSoundActive] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -80,7 +84,7 @@ export default function Navbar() {
             >
               <div className="relative w-8 h-8 rounded-full overflow-hidden border border-accent-cyan/60 shadow-[0_0_12px_rgba(0,240,255,0.4)] group-hover:scale-110 transition-transform shrink-0">
                 <Image
-                  src="/images/suriyakumar-portrait.jpg"
+                  src={photo}
                   alt="Suriyakumar E"
                   fill
                   className="object-cover object-top"

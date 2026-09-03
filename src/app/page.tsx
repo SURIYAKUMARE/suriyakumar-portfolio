@@ -42,7 +42,7 @@ export default function Home() {
       <Preloader onComplete={() => setLoading(false)} />
 
       <div className={`min-h-screen transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}>
-        <Navbar />
+        <Navbar photo={profile.photo_url} />
         
         <main>
           {/* Hero Section */}
@@ -50,6 +50,7 @@ export default function Home() {
             name={profile.name}
             title={profile.title}
             subtitle={profile.subtitle}
+            photo={profile.photo_url}
           />
 
           {/* About Me (Bio, 3D Card, Interactive Skills & Badges) */}
@@ -68,7 +69,7 @@ export default function Home() {
           <Contact profile={profile} />
         </main>
 
-        <Footer />
+        <Footer photo={profile.photo_url} />
       </div>
     </>
   );
