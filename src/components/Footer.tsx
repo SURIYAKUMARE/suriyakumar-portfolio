@@ -87,7 +87,17 @@ export default function Footer({ photo = '/images/suriyakumar-portrait.jpg' }: F
           <a href="#projects" className="hover:text-zinc-300 transition-colors">Projects</a>
           <a href="#education" className="hover:text-zinc-300 transition-colors">Education</a>
           <a href="#certifications" className="hover:text-zinc-300 transition-colors">Certifications</a>
-          <a href="/admin" className="hover:text-accent-cyan transition-colors">Admin Portal</a>
+          <button
+            onClick={() => {
+              sounds.playClick();
+              if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('open-admin-login'));
+              }
+            }}
+            className="hover:text-accent-cyan transition-colors"
+          >
+            Admin Portal
+          </button>
         </div>
       </div>
     </footer>

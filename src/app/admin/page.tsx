@@ -124,11 +124,9 @@ export default function AdminPage() {
 
     // Primary secure password check requested by owner
     if (password.trim() === 'suryaaswin@12') {
-      setIsAuthenticated(true);
       sessionStorage.setItem('admin_authenticated', 'true');
-      loadData();
       sounds.playSuccess();
-      setAuthLoading(false);
+      window.location.href = '/?admin=open';
       return;
     }
 

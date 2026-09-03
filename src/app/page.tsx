@@ -10,6 +10,7 @@ import Education from '@/components/Education';
 import Certifications from '@/components/Certifications';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
+import AdminBar from '@/components/AdminBar';
 import { Project, ProfileData } from '@/types';
 import { DataService } from '@/lib/supabase';
 import { initialProfile, initialProjects } from '@/lib/defaultData';
@@ -70,6 +71,14 @@ export default function Home() {
         </main>
 
         <Footer photo={profile.photo_url} />
+
+        {/* Inline Admin Controller (Login modal & floating toolbar to stay on landing page) */}
+        <AdminBar
+          profile={profile}
+          onProfileUpdate={setProfile}
+          projects={projects}
+          onProjectsUpdate={setProjects}
+        />
       </div>
     </>
   );
