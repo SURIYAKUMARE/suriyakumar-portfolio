@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, useScroll } from 'framer-motion';
+import Image from 'next/image';
 import { Volume2, VolumeX, Menu, X, ArrowUpRight, Shield } from 'lucide-react';
 import { sounds } from '@/lib/sound';
 
@@ -50,15 +51,20 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center justify-between glass-panel px-5 py-3 rounded-full border border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
-            {/* Brand Logo */}
+            {/* Brand Logo with Avatar */}
             <Link
               href="/"
-              className="flex items-center gap-2.5 group"
+              className="flex items-center gap-3 group"
               onMouseEnter={() => sounds.playHover()}
               onClick={() => sounds.playClick()}
             >
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent-cyan to-emerald-400 flex items-center justify-center font-black text-xs text-black shadow-[0_0_15px_rgba(0,240,255,0.4)] group-hover:scale-105 transition-transform">
-                SE
+              <div className="relative w-8 h-8 rounded-full overflow-hidden border border-accent-cyan/60 shadow-[0_0_12px_rgba(0,240,255,0.4)] group-hover:scale-110 transition-transform">
+                <Image
+                  src="/images/suriyakumar-portrait.jpg"
+                  alt="Suriyakumar E"
+                  fill
+                  className="object-cover object-top"
+                />
               </div>
               <div className="flex flex-col">
                 <span className="text-sm font-semibold tracking-tight text-white group-hover:text-accent-cyan transition-colors">

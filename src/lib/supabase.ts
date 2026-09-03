@@ -116,7 +116,12 @@ export const DataService = {
       const stored = localStorage.getItem(LOCAL_STORAGE_PROFILE_KEY);
       if (stored) {
         try {
-          return JSON.parse(stored);
+          const parsed = JSON.parse(stored);
+          if (!parsed.photo_url || parsed.photo_url.includes('unsplash')) {
+            parsed.photo_url = initialProfile.photo_url;
+            localStorage.setItem(LOCAL_STORAGE_PROFILE_KEY, JSON.stringify(parsed));
+          }
+          return parsed;
         } catch {
           // fall through
         }

@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import Image from 'next/image';
 import { ArrowDownRight, Sparkles, Terminal, Database, Cpu, Mail } from 'lucide-react';
 import { sounds } from '@/lib/sound';
 
@@ -58,17 +59,25 @@ export default function Hero({
         style={{ opacity, y: yParallax }}
         className="relative z-10 max-w-6xl mx-auto flex flex-col items-center text-center"
       >
-        {/* Top Floating Badge */}
+        {/* Top Floating Badge with Profile Avatar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-white/10 mb-8"
+          className="inline-flex items-center gap-3 px-3.5 py-1.5 rounded-full glass-panel border border-white/10 mb-8 shadow-[0_0_25px_rgba(0,240,255,0.15)]"
         >
-          <Sparkles className="w-3.5 h-3.5 text-accent-cyan animate-spin-slow" />
+          <div className="relative w-7 h-7 rounded-full overflow-hidden border border-accent-cyan/60 shadow-[0_0_10px_rgba(0,240,255,0.4)]">
+            <Image
+              src="/images/suriyakumar-portrait.jpg"
+              alt={name}
+              fill
+              className="object-cover object-top"
+            />
+          </div>
           <span className="text-xs font-mono tracking-widest text-zinc-300 uppercase">
             {title}
           </span>
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
         </motion.div>
 
         {/* Massive Kinetic Typography */}

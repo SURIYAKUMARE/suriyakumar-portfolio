@@ -36,7 +36,10 @@ export default function About({ profile }: AboutProps) {
     mouseY.set(0);
   };
 
-  const photo = profile.photo_url || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop";
+  const [selectedPhoto, setSelectedPhoto] = useState<'portrait' | 'casual'>('portrait');
+  const photo = selectedPhoto === 'portrait'
+    ? (profile.photo_url && !profile.photo_url.includes('unsplash') ? profile.photo_url : '/images/suriyakumar-portrait.jpg')
+    : '/images/suriyakumar-casual.jpg';
 
   return (
     <section id="about" className="relative py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
@@ -77,11 +80,44 @@ export default function About({ profile }: AboutProps) {
                   src={photo}
                   alt={profile.name}
                   fill
-                  className="object-cover contrast-110 group-hover:scale-105 transition-all duration-700 ease-out"
+                  priority
+                  className="object-cover object-top contrast-110 group-hover:scale-105 transition-all duration-700 ease-out"
                 />
 
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#07080a] via-transparent to-transparent opacity-80" />
+
+                {/* Photo Switcher Pill */}
+                <div className="absolute top-4 right-4 z-20 flex gap-1 p-1 rounded-full glass-panel border border-white/15 backdrop-blur-md">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedPhoto('portrait');
+                      sounds.playClick();
+                    }}
+                    className={`px-3 py-1 rounded-full text-[10px] font-mono transition-all ${
+                      selectedPhoto === 'portrait'
+                        ? 'bg-accent-cyan text-black font-bold shadow-md'
+                        : 'text-zinc-400 hover:text-white'
+                    }`}
+                  >
+                    Suit
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedPhoto('casual');
+                      sounds.playClick();
+                    }}
+                    className={`px-3 py-1 rounded-full text-[10px] font-mono transition-all ${
+                      selectedPhoto === 'casual'
+                        ? 'bg-accent-cyan text-black font-bold shadow-md'
+                        : 'text-zinc-400 hover:text-white'
+                    }`}
+                  >
+                    Casual
+                  </button>
+                </div>
 
                 {/* Floating Glass Tag */}
                 <div className="absolute bottom-5 left-5 right-5 p-4 rounded-xl glass-panel border border-white/15 backdrop-blur-xl">
