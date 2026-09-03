@@ -44,14 +44,14 @@ export default function Certifications({ certifications }: CertificationsProps) 
               onMouseEnter={() => sounds.playHover()}
               className={`p-5 sm:p-6 rounded-3xl flex flex-col justify-between transition-all duration-300 relative group overflow-hidden ${
                 isFeatured
-                  ? 'glass-card border-2 border-amber-400/40 bg-gradient-to-b from-amber-500/10 via-surface-100 to-surface-200 shadow-[0_10px_35px_rgba(251,191,36,0.15)]'
-                  : 'glass-card border border-white/10 hover:border-accent-cyan/50 shadow-xl'
+                  ? 'glass-card border-2 border-amber-400/50 bg-gradient-to-b from-amber-500/15 via-[#0d131f] to-[#0a0e17] shadow-[0_0_35px_rgba(251,191,36,0.25)] hover:border-amber-300'
+                  : 'glass-card border border-white/10 hover:border-accent-cyan/60 hover:shadow-[0_10px_30px_rgba(0,240,255,0.15)]'
               }`}
             >
-              {/* Corner Glow on Hover */}
+              {/* Corner Glow */}
               <div
-                className={`absolute -top-12 -right-12 w-28 h-28 rounded-full blur-[40px] pointer-events-none transition-opacity duration-300 opacity-0 group-hover:opacity-100 ${
-                  isFeatured ? 'bg-amber-400/30' : 'bg-accent-cyan/20'
+                className={`absolute -top-10 -right-10 w-32 h-32 rounded-full blur-[45px] pointer-events-none transition-opacity duration-300 ${
+                  isFeatured ? 'bg-amber-400/35 opacity-100' : 'bg-accent-cyan/20 opacity-0 group-hover:opacity-100'
                 }`}
               />
 

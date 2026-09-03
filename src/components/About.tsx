@@ -157,13 +157,16 @@ export default function About({ profile }: AboutProps) {
             >
               <motion.div
                 style={{ rotateX, rotateY }}
-                className="relative w-full max-w-md aspect-[4/5] rounded-3xl overflow-hidden glass-card border border-white/20 p-3 shadow-[0_25px_70px_rgba(0,0,0,0.85)] group transition-all duration-300 hover:border-accent-cyan/60"
+                className="relative w-full max-w-md aspect-[4/5] rounded-3xl overflow-hidden glass-card border border-white/20 p-3 shadow-[0_25px_70px_rgba(0,0,0,0.85)] group transition-all duration-300 hover:border-accent-cyan/80 hover:shadow-[0_0_50px_rgba(0,240,255,0.3)]"
               >
+                {/* Ambient Glowing Border Beam behind card */}
+                <div className="absolute -inset-1 rounded-3xl bg-gradient-to-tr from-accent-cyan/40 via-emerald-400/20 to-sky-500/40 blur-md opacity-40 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none -z-10" />
+
                 {/* Dynamic Cursor Spotlight Beam on Hover */}
                 <div
                   className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
                   style={{
-                    background: `radial-gradient(400px circle at ${spotlightPos.x}% ${spotlightPos.y}%, rgba(0, 240, 255, 0.18), transparent 70%)`,
+                    background: `radial-gradient(400px circle at ${spotlightPos.x}% ${spotlightPos.y}%, rgba(0, 240, 255, 0.22), transparent 70%)`,
                   }}
                 />
 

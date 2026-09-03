@@ -28,8 +28,12 @@ export default function Education({ education }: EducationProps) {
         </h2>
       </div>
 
-      {/* Vertical Animated Timeline (Precision centered on mobile & laptop) */}
-      <div className="relative border-l border-white/15 ml-3 sm:ml-8 space-y-8 sm:space-y-12 pl-5 sm:pl-8">
+      {/* Vertical Animated Timeline with Glowing Energy Stream */}
+      <div className="relative ml-3 sm:ml-8 space-y-8 sm:space-y-12 pl-5 sm:pl-8">
+        {/* The Animated Line */}
+        <div className="absolute left-0 top-3 bottom-3 w-[2px] bg-gradient-to-b from-accent-cyan via-emerald-400 to-transparent opacity-40" />
+        <div className="absolute left-[-1px] top-3 w-1 h-20 bg-accent-cyan rounded-full blur-[2px] animate-pulse" />
+
         {education.map((item, idx) => (
           <motion.div
             key={item.id}
@@ -40,13 +44,13 @@ export default function Education({ education }: EducationProps) {
             onMouseEnter={() => sounds.playHover()}
             className="relative group"
           >
-            {/* Timeline Glowing Node Marker (Mathematically centered on border-l line) */}
-            <div className="absolute -left-[30px] sm:-left-[42px] top-1.5 w-5 h-5 rounded-full bg-[#0a0e17] border-2 border-accent-cyan flex items-center justify-center shadow-[0_0_14px_rgba(0,240,255,0.7)] group-hover:scale-125 transition-transform duration-300">
-              <div className="w-2 h-2 rounded-full bg-accent-cyan animate-pulse" />
+            {/* Timeline Glowing Node Marker (Centered on line) */}
+            <div className="absolute -left-[30px] sm:-left-[42px] top-1.5 w-5 h-5 rounded-full bg-[#0a0e17] border-2 border-accent-cyan flex items-center justify-center shadow-[0_0_18px_rgba(0,240,255,0.9)] group-hover:scale-125 transition-transform duration-300 z-10">
+              <div className="w-2 h-2 rounded-full bg-accent-cyan animate-ping" />
             </div>
 
             {/* Timeline Card */}
-            <div className="p-5 sm:p-8 rounded-3xl glass-card border border-white/10 hover:border-accent-cyan/40 transition-all duration-300">
+            <div className="p-5 sm:p-8 rounded-3xl glass-card border border-white/10 hover:border-accent-cyan/60 hover:shadow-[0_10px_35px_rgba(0,240,255,0.15)] transition-all duration-300">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3 sm:mb-4">
                 <div>
                   <h3 className="text-lg sm:text-2xl font-display font-bold text-white group-hover:text-accent-cyan transition-colors leading-snug">

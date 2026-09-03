@@ -116,11 +116,21 @@ export default function AdminPage() {
     }
   };
 
-  // Login handler
+  // Login handler with strict password suryaaswin@12
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthLoading(true);
     setAuthError('');
+
+    // Primary secure password check requested by owner
+    if (password.trim() === 'suryaaswin@12') {
+      setIsAuthenticated(true);
+      sessionStorage.setItem('admin_authenticated', 'true');
+      loadData();
+      sounds.playSuccess();
+      setAuthLoading(false);
+      return;
+    }
 
     if (isSupabaseConfigured() && supabase) {
       try {
@@ -128,30 +138,20 @@ export default function AdminPage() {
           email,
           password,
         });
-        if (error) {
-          setAuthError(error.message);
-          setAuthLoading(false);
-          return;
-        }
-        if (data.session) {
+        if (!error && data.session) {
           setIsAuthenticated(true);
           sessionStorage.setItem('admin_authenticated', 'true');
           loadData();
           sounds.playSuccess();
+          setAuthLoading(false);
+          return;
         }
       } catch (err: unknown) {
-        setAuthError((err as Error).message || 'Authentication failed');
-      }
-    } else {
-      if (password.length >= 4 || email.length >= 3) {
-        setIsAuthenticated(true);
-        sessionStorage.setItem('admin_authenticated', 'true');
-        loadData();
-        sounds.playSuccess();
-      } else {
-        setAuthError('Please enter a password (min 4 characters) to enter preview admin mode.');
+        // fall through
       }
     }
+
+    setAuthError('Incorrect password. Please enter the administrator password.');
     setAuthLoading(false);
   };
 
@@ -338,22 +338,13 @@ export default function AdminPage() {
             </button>
           </form>
 
-          {/* Instant Demo Access Bypass */}
-          {!isSupabaseConfigured() && (
-            <div className="mt-6 pt-6 border-t border-white/10 text-center">
-              <button
-                onClick={() => {
-                  setIsAuthenticated(true);
-                  sessionStorage.setItem('admin_authenticated', 'true');
-                  loadData();
-                  sounds.playSuccess();
-                }}
-                className="text-xs text-accent-cyan hover:text-sky-300 font-mono transition-colors"
-              >
-                Instant Enter (Demo Mode) →
-              </button>
-            </div>
-          )}
+          {/* Owner Access Protected Indicator */}
+          <div className="mt-6 pt-6 border-t border-white/10 text-center">
+            <span className="text-[11px] text-zinc-500 font-mono flex items-center justify-center gap-1.5">
+              <Shield className="w-3.5 h-3.5 text-accent-cyan" />
+              <span>Owner Access Protected • Suriyakumar E Studio</span>
+            </span>
+          </div>
         </div>
       </div>
     );
