@@ -60,6 +60,9 @@ export default function AdminPage() {
   const [editingCert, setEditingCert] = useState<CertificationItem | null>(null);
   const [isCreatingCert, setIsCreatingCert] = useState(false);
 
+  const [editingEdu, setEditingEdu] = useState<EducationItem | null>(null);
+  const [isCreatingEdu, setIsCreatingEdu] = useState(false);
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3500);
@@ -242,6 +245,42 @@ export default function AdminPage() {
     setProfile(updatedProfile);
     await DataService.saveProfile(updatedProfile);
     showToast('Certification deleted.');
+  };
+
+  // Education Actions
+  const handleSaveEdu = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingEdu || !profile) return;
+    sounds.playClick();
+
+    const currentEdu = profile.education || [];
+    const index = currentEdu.findIndex((ed) => ed.id === editingEdu.id);
+    let updatedEdu: EducationItem[];
+
+    if (index >= 0) {
+      updatedEdu = [...currentEdu];
+      updatedEdu[index] = { ...editingEdu };
+    } else {
+      updatedEdu = [editingEdu, ...currentEdu];
+    }
+
+    const updatedProfile = { ...profile, education: updatedEdu };
+    setProfile(updatedProfile);
+    await DataService.saveProfile(updatedProfile);
+    setEditingEdu(null);
+    setIsCreatingEdu(false);
+    showToast('Education saved!');
+    sounds.playSuccess();
+  };
+
+  const handleDeleteEdu = async (id: string) => {
+    if (!profile || !confirm('Delete this education milestone?')) return;
+    sounds.playClick();
+    const updatedEdu = (profile.education || []).filter((ed) => ed.id !== id);
+    const updatedProfile = { ...profile, education: updatedEdu };
+    setProfile(updatedProfile);
+    await DataService.saveProfile(updatedProfile);
+    showToast('Education deleted.');
   };
 
   // Reset defaults
@@ -877,7 +916,34 @@ export default function AdminPage() {
         {/* ========================================================================= */}
         {activeTab === 'education' && profile && (
           <div className="max-w-3xl space-y-6">
-            <h2 className="text-2xl font-bold font-serif text-white">Academic Journey</h2>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-bold font-serif text-white">Academic Journey</h2>
+                <p className="text-xs text-zinc-400 font-mono">
+                  Educational background and milestones.
+                </p>
+              </div>
+
+              <button
+                onClick={() => {
+                  setEditingEdu({
+                    id: 'edu-' + Date.now(),
+                    degree: '',
+                    institution: '',
+                    location: 'Coimbatore, Tamil Nadu',
+                    period: '2025 — 2029',
+                    description: '',
+                  });
+                  setIsCreatingEdu(true);
+                  sounds.playClick();
+                }}
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-accent-cyan hover:bg-accent-cyan/90 text-black font-semibold text-xs uppercase tracking-wider transition-colors shadow-lg"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add Education</span>
+              </button>
+            </div>
+
             <div className="space-y-4">
               {(profile.education || []).map((edu) => (
                 <div key={edu.id} className="p-6 rounded-2xl glass-card border border-white/10 space-y-3">
@@ -886,7 +952,25 @@ export default function AdminPage() {
                       <h3 className="text-lg font-bold text-white font-serif">{edu.degree}</h3>
                       <p className="text-xs text-accent-cyan font-mono">{edu.institution} • {edu.location}</p>
                     </div>
-                    <span className="text-xs font-mono text-zinc-400">{edu.period}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-mono text-zinc-400">{edu.period}</span>
+                      <button
+                        onClick={() => {
+                          setEditingEdu(edu);
+                          setIsCreatingEdu(false);
+                          sounds.playClick();
+                        }}
+                        className="p-1.5 rounded-lg bg-white/5 hover:bg-white/15 text-zinc-300"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteEdu(edu.id)}
+                        className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                   <p className="text-sm text-zinc-300 font-light">{edu.description}</p>
                 </div>
@@ -1336,6 +1420,104 @@ export default function AdminPage() {
                     className="px-6 py-2 rounded-xl bg-white text-black font-semibold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-colors"
                   >
                     Save Certificate
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Edit Education Modal */}
+      <AnimatePresence>
+        {editingEdu && (
+          <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+            <div
+              onClick={() => setEditingEdu(null)}
+              className="fixed inset-0 bg-black/85 backdrop-blur-xl"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative w-full max-w-lg rounded-3xl glass-panel border border-white/20 bg-[#0a0e17] shadow-2xl z-10 p-6 sm:p-8 space-y-4"
+            >
+              <h3 className="text-xl font-bold font-serif text-white">
+                {isCreatingEdu ? 'Add Education Milestone' : `Edit ${editingEdu.degree}`}
+              </h3>
+
+              <form onSubmit={handleSaveEdu} className="space-y-4">
+                <div>
+                  <label className="text-xs font-mono text-zinc-400 block mb-1">Degree / Course</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingEdu.degree}
+                    onChange={(e) => setEditingEdu({ ...editingEdu, degree: e.target.value })}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white focus:outline-none focus:border-accent-cyan"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-xs font-mono text-zinc-400 block mb-1">Institution</label>
+                    <input
+                      type="text"
+                      required
+                      value={editingEdu.institution}
+                      onChange={(e) => setEditingEdu({ ...editingEdu, institution: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white focus:outline-none focus:border-accent-cyan"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-mono text-zinc-400 block mb-1">Period (e.g. 2025 — 2029)</label>
+                    <input
+                      type="text"
+                      required
+                      value={editingEdu.period}
+                      onChange={(e) => setEditingEdu({ ...editingEdu, period: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white focus:outline-none focus:border-accent-cyan"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="text-xs font-mono text-zinc-400 block mb-1">Location</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingEdu.location}
+                    onChange={(e) => setEditingEdu({ ...editingEdu, location: e.target.value })}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white focus:outline-none focus:border-accent-cyan"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-mono text-zinc-400 block mb-1">Description</label>
+                  <textarea
+                    rows={3}
+                    required
+                    value={editingEdu.description}
+                    onChange={(e) => setEditingEdu({ ...editingEdu, description: e.target.value })}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-base sm:text-sm text-white focus:outline-none focus:border-accent-cyan resize-none"
+                  />
+                </div>
+
+                <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+                  <button
+                    type="button"
+                    onClick={() => setEditingEdu(null)}
+                    className="px-4 py-2 text-xs font-mono text-zinc-400 hover:text-white"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-6 py-2 rounded-xl bg-white text-black font-semibold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-colors"
+                  >
+                    Save Education
                   </button>
                 </div>
               </form>
